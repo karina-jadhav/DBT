@@ -1,0 +1,21 @@
+Assignment No 2
+
+
+1) Which field of the Customers table is the primary key?
+
+The primary key of the Customers table is CNUM. This field uniquely identifies each customer in the table.
+2) What is the 4th column of the Customers table?
+The 4th column of the Customers table is RATING.
+
+
+3) What is another word for row? For column?
+•	Another word for row is record or tuple.
+•	Another word for column is field or attribute.
+
+
+4) Why isn’t it possible to see the first five rows of a table?
+The inability to see the first five rows of a table may arise from several reasons:
+•	Access Restrictions: The user may not have the necessary permissions to view the data in the table.
+•	Database Management System Limitations: Some systems may limit the display of rows based on configuration settings or the current query being executed.
+•	SQL Query: If an SQL query is used, it may not include a limit on the number of rows displayed (e.g., SELECT * FROM Customers LIMIT 5;).
+•	Empty Table: The table may be empty, resulting in no rows to display.
