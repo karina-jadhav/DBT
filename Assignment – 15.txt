@@ -1,0 +1,34 @@
+Assignment – 15
+Using Subqueries with DML Commands.
+1) Assume there is a table called Multicust, with all of the same column definitions 
+as Salespeople. Write a command that inserts all salespeople with more than one 
+customer into this table.
+mysql> CREATE TABLE Multicust (
+    ->     Snum INT PRIMARY KEY,
+    ->     Sname VARCHAR(50),
+    ->     City VARCHAR(50),
+    ->     Comm DECIMAL(5,2)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> INSERT INTO Multicust (Snum, Sname, City, Comm)
+    -> SELECT S.Snum, S.Sname, S.City, S.Comm
+    -> FROM Salespeople S
+    -> WHERE (SELECT COUNT(*) FROM Customers C WHERE C.Snum = S.Snum) > 1;
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 1
+
+mysql> DELETE FROM Customers
+    -> WHERE Cnum NOT IN (SELECT Cnum FROM Orders);
+Query OK, 0 rows affected (0.00 sec)
+2) Write a command that deletes all customers with no current orders.
+mysql> DELETE FROM Customers
+    -> WHERE Cnum NOT IN (SELECT Cnum FROM Orders);
+Query OK, 1 row affected (0.01 sec)
+3) Write a command that increases by twenty percent the commissions of all 
+salespeople with total orders above Rs. 3,000
+mysql> UPDATE Salespeople
+    -> SET Comm = Comm * 1.20
+    -> WHERE Snum IN (SELECT Snum FROM Orders GROUP BY Snum HAVING SUM(Amt) > 3000);
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
