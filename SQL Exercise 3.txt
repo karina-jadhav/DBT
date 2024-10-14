@@ -1,0 +1,114 @@
+SQL Exercise 3 
+
+1. Display all the Supplier names with the initial letter capital.
+
+mysql> SELECT CONCAT(UPPER(LEFT(Sname, 1)), LOWER(SUBSTRING(Sname, 2))) AS CapitalizedName FROM S;
++-----------------+
+| CapitalizedName |
++-----------------+
+| Supplier1       |
+| Supplier2       |
+| Supplier3       |
++-----------------+
+3 rows in set (0.01 sec)
+
+
+2. Display all the Supplier names in upper case.
+mysql> SELECT UPPER(Sname) AS UppercaseName FROM S;
++---------------+
+| UppercaseName |
++---------------+
+| SUPPLIER1     |
+| SUPPLIER2     |
+| SUPPLIER3     |
++---------------+
+3 rows in set (0.00 sec)
+
+3. Display all the Supplier names in lower case.
+mysql> SELECT LOWER(Sname) AS LowercaseName FROM S;
++---------------+
+| LowercaseName |
++---------------+
+| supplier1     |
+| supplier2     |
+| supplier3     |
++---------------+
+3 rows in set (0.00 sec)
+
+4. Display all the Supplier names padded to 25 characters, with spaces on the left.
+
+mysql> SELECT REPLACE(Sname, 'la', 'ro') AS ReplacedName FROM S;
++--------------+
+| ReplacedName |
++--------------+
+| Supplier1    |
+| Supplier2    |
+| Supplier3    |
++--------------+
+3 rows in set (0.00 sec)
+
+
+5. Display all the Supplier names (with ‘la’ replaced by ‘ro’). 
+ HINT: REPLACE.mysql> SELECT REPLACE(REPLACE(Sname, 'l', 'r'), 'a', 'o') AS ReplacedName FROM S;
++--------------+
+| ReplacedName |
++--------------+
+| Supprier1    |
+| Supprier2    |
+| Supprier3    |
++--------------+
+3 rows in set (0.00 sec)
+
+
+7. Display the Supplier names and the lengths of the names. 
+mysql> SELECT Sname, CHAR_LENGTH(Sname) AS NameLength FROM S;
++-----------+------------+
+| Sname     | NameLength |
++-----------+------------+
+| Supplier1 |          9 |
+| Supplier2 |          9 |
+| Supplier3 |          9 |
++-----------+------------+
+3 rows in set (0.00 sec)
+
+
+8. Use the soundex function to search for a supplier by the name of ‘BLOKE’. 
+mysql> SELECT Sname FROM S WHERE SOUNDEX(Sname) = SOUNDEX('BLOKE');
+Empty set (0.00 sec)
+
+9. Display the Supplier name and the status (as Ten, Twenty, Thirty, etc.). 
+mysql> SELECT Sname,
+    ->        CASE
+    ->            WHEN Status = 10 THEN 'Ten'
+    ->            WHEN Status = 20 THEN 'Twenty'
+    ->            WHEN Status = 30 THEN 'Thirty'
+    ->            ELSE 'Other'
+    ->        END AS StatusName
+    -> FROM S;
++-----------+------------+
+| Sname     | StatusName |
++-----------+------------+
+| Supplier1 | Ten        |
+| Supplier2 | Twenty     |
+| Supplier3 | Thirty     |
++-----------+------------+
+3 rows in set (0.00 sec)
+
+ 
+10. Display the current day (e.g. Thursday). mysql> SELECT DAYNAME(CURDATE()) AS CurrentDay;
++------------+
+| CurrentDay |
++------------+
+| Thursday   |
++------------+
+1 row in set (0.00 sec)
+
+6. Implement the above command such that ‘l’ is replaced with ‘r’ and ‘a’ is replaced
+with ‘o’.
+mysql> SELECT REPLACE(REPLACE('select adddate(sysdate(), 1/(24*60*60)) from dual;', 'l', 'r'), 'a', 'o');
++--------------------------------------------------------------------------------------------+
+| REPLACE(REPLACE('select adddate(sysdate(), 1/(24*60*60)) from dual;', 'l', 'r'), 'a', 'o') |
++--------------------------------------------------------------------------------------------+
+| serect odddote(sysdote(), 1/(24*60*60)) from duor;                                         |
++--------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)

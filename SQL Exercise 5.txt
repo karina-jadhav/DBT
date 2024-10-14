@@ -1,0 +1,108 @@
+SQL Exercise 5 
+1. Display the Supplier name and the Quantity sold. 
+mysql> SELECT S.Sname, SPJ.Qty
+    -> FROM S
+    -> JOIN SPJ ON S.`S#` = SPJ.`S#`;
++-----------+------+
+| Sname     | Qty  |
++-----------+------+
+| Supplier1 |  100 |
+| Supplier2 |  200 |
+| Supplier3 |  300 |
++-----------+------+
+3 rows in set (0.01 sec) 
+2. Display the Part name and Quantity sold. 
+ mysql> SELECT P.Pname, SPJ.Qty
+    -> FROM P
+    -> JOIN SPJ ON P.`P#` = SPJ.`P#`;
++-------+------+
+| Pname | Qty  |
++-------+------+
+| Part1 |  100 |
+| Part2 |  200 |
+| Part3 |  300 |
++-------+------+
+3 rows in set (0.03 sec)
+3. Display the Project name and Quantity sold. 
+ mysql> SELECT J.Jname, SPJ.Qty
+    -> FROM J
+    -> JOIN SPJ ON J.`J#` = SPJ.`J#`;
++----------+------+
+| Jname    | Qty  |
++----------+------+
+| Project1 |  100 |
+| Project2 |  200 |
+| Project3 |  300 |
++----------+------+
+3 rows in set (0.02 sec)
+4. Display the Supplier name, Part name, Project name and Quantity sold. 
+mysql> SELECT S.Sname, P.Pname, J.Jname, SPJ.Qty
+    -> FROM S
+    -> JOIN SPJ ON S.`S#` = SPJ.`S#`
+    -> JOIN P ON P.`P#` = SPJ.`P#`
+    -> JOIN J ON J.`J#` = SPJ.`J#`;
++-----------+-------+----------+------+
+| Sname     | Pname | Jname    | Qty  |
++-----------+-------+----------+------+
+| Supplier1 | Part1 | Project1 |  100 |
+| Supplier2 | Part2 | Project2 |  200 |
+| Supplier3 | Part3 | Project3 |  300 |
++-----------+-------+----------+------+
+3 rows in set (0.00 sec) 
+5. Display the Supplier name, Supplying Parts to a Project in the same City. 
+mysql> SELECT S.Sname
+    -> FROM S
+    -> JOIN SPJ ON S.`S#` = SPJ.`S#`
+    -> JOIN J ON SPJ.`J#` = J.`J#`
+    -> WHERE S.City = J.City;
+Empty set (0.00 sec)
+6. Display the Part name that is ‘Red’ is color, and the Quantity sold. 
+ mysql> SELECT P.Pname, SPJ.Qty
+    -> FROM P
+    -> JOIN SPJ ON P.`P#` = SPJ.`P#`
+    -> WHERE P.Color = 'Red';
++-------+------+
+| Pname | Qty  |
++-------+------+
+| Part1 |  100 |
++-------+------+
+1 row in set (0.00 sec)
+7. Display all the Quantity sold by Suppliers with the Status = 20. 
+ mysql> SELECT S.Sname, SPJ.Qty
+    -> FROM S
+    -> JOIN SPJ ON S.`S#` = SPJ.`S#`
+    -> WHERE S.Status = 20;
++-----------+------+
+| Sname     | Qty  |
++-----------+------+
+| Supplier2 |  200 |
++-----------+------+
+1 row in set (0.00 sec)
+8. Display all the Parts and Quantity with a Weight > 14. 
+ 
+mysql> SELECT P.Pname, SPJ.Qty
+    -> FROM P
+    -> JOIN SPJ ON P.`P#` = SPJ.`P#`
+    -> WHERE P.Weight > 14;
+Empty set (0.01 sec)9. Display all the Project names and City, which has bought more than 500 Parts. 
+ 
+mysql> SELECT J.Jname, J.City
+    -> FROM J
+    -> JOIN SPJ ON J.`J#` = SPJ.`J#`
+    -> GROUP BY J.Jname, J.City
+    -> HAVING SUM(SPJ.Qty) > 500;
+Empty set (0.01 sec)
+10. Display all the Part names and Quantity sold that have a Weight less than 15. 
+ mysql> SELECT P.Pname, SPJ.Qty
+    -> FROM P
+    -> JOIN SPJ ON P.`P#` = SPJ.`P#`
+    -> WHERE P.Weight < 15;
++-------+------+
+| Pname | Qty  |
++-------+------+
+| Part1 |  100 |
+| Part2 |  200 |
+| Part3 |  300 |
++-------+------+
+3 rows in set (0.00 sec)
+11. Display all the Employee names and the name of their Managers

@@ -1,0 +1,125 @@
+
+SQL Exercise 6 
+1. Display all the Suppliers with the same Status as the supplier, ‘CLARK
+mysql> select * from semp;
++-------+---------+-------+--------+----------+
+| EMPNO | EMPNAME | BASIC | DEPTNO | DEPTHEAD |
++-------+---------+-------+--------+----------+
+| 0001  | SUNIL   |  6000 | 10     | NULL     |
+| 0002  | HIREN   |  8000 | 20     | NULL     |
+| 0003  | ALI     |  4000 | 10     | 0001     |
+| 0004  | GEORGE  |  6000 | 20     | 0002     |
++-------+---------+-------+--------+----------+
+4 rows in set (0.01 sec)
+
+2. Display all the Employees in the same department as the employee ‘MILLER’. 
+mysql> SELECT *
+    -> FROM semp
+    -> WHERE DEPTNO = (SELECT DEPTNO FROM semp WHERE EMPNAME = 'MILLER');
+Empty set (0.00 sec)
+
+3. Display all the Parts which have more Weight than all the Red parts. mysql> SELECT *
+    -> FROM  p
+    -> WHERE Weight > (SELECT MAX(Weight) FROM p WHERE Color = 'Red');
++----+-------+-------+--------+--------+
+| P# | Pname | Color | Weight | City   |
++----+-------+-------+--------+--------+
+| P2 | Part2 | Blue  |     14 | Berlin |
+| P3 | Part3 | Green |     13 | Paris  |
++----+-------+-------+--------+--------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM p;
++----+-------+-------+--------+--------+
+| P# | Pname | Color | Weight | City   |
++----+-------+-------+--------+--------+
+| P1 | Part1 | Red   |   12.5 | London |
+| P2 | Part2 | Blue  |     14 | Berlin |
+| P3 | Part3 | Green |     13 | Paris  |
++----+-------+-------+--------+--------+
+3 rows in set (0.00 sec)
+
+4. Display all the Projects going on in the same city as the project ‘TAPE’
+mysql> SELECT *
+    -> FROM  j
+    -> WHERE City = (SELECT City FROM j WHERE Jname = 'TAPE');
+Empty set (0.02 sec)
+
+5. Display all the Parts with Weight less than all the Green parts. 
+mysql> SELECT *
+    -> FROM p
+    -> WHERE Weight < (SELECT MIN(Weight) FROM p WHERE Color = 'Green');
++----+-------+-------+--------+--------+
+| P# | Pname | Color | Weight | City   |
++----+-------+-------+--------+--------+
+| P1 | Part1 | Red   |   12.5 | London |
++----+-------+-------+--------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from s;
++----+-----------+--------+--------+
+| S# | Sname     | Status | City   |
++----+-----------+--------+--------+
+| S1 | Supplier1 |     10 | London |
+| S2 | Supplier2 |     20 | Paris  |
+| S3 | Supplier3 |     30 | Athens |
++----+-----------+--------+--------+
+3 rows in set (0.00 sec)
+
+6. Display the name of the Supplier who has sold the maximum Quantity (in one 
+sale).
+mysql> SELECT S.Sname
+    -> FROM S
+    -> JOIN SPJ ON S.`S#` = SPJ.`S#`
+    -> ORDER BY SPJ.Qty DESC
+    -> LIMIT 1;
++-----------+
+| Sname     |
++-----------+
+| Supplier3 |
++-----------+
+1 row in set (0.07 sec)
+7. Display the name of the Employee with the minimum Salary.
+
+mysql> SELECT EMPNAME
+    -> FROM SEMP
+    -> WHERE BASIC = (SELECT MIN(BASIC) FROM SEMP);
++---------+
+| EMPNAME |
++---------+
+| ALI     |
++---------+
+1 row in set (0.03 sec)
+
+8. Display the name of the Supplier who has sold the maximum overall Quantity (sum 
+of Sales). 
+
+mysql> SELECT S.Sname
+    -> FROM S
+    -> JOIN SPJ ON S.`S#` = SPJ.`S#`
+    -> GROUP BY S.Sname
+    -> ORDER BY SUM(SPJ.Qty) DESC
+    -> LIMIT 1;
++-----------+
+| Sname     |
++-----------+
+| Supplier3 |
++-----------+
+1 row in set (0.01 sec)
+
+9. Display the name of the Department with the maximum number of Employees.
+mysql> SELECT SDEPT.DEPTNAME
+    -> FROM SEMP
+    -> JOIN SDEPT ON SEMP.DEPTNO = SDEPT.DEPTNO
+    -> GROUP BY SDEPT.DEPTNAME
+    -> ORDER BY COUNT(SEMP.EMPNO) DESC
+    -> LIMIT 1;
++-------------+
+| DEPTNAME    |
++-------------+
+| Development |
++-------------+
+1 row in set (0.02 sec)
+
+mysql>

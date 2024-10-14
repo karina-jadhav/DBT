@@ -1,0 +1,165 @@
+SQL Exercise 4 
+1. Display the minimum Status in the Supplier table. 
+
+
+mysql> SELECT MIN(Status) AS MinStatus FROM S;
++-----------+
+| MinStatus |
++-----------+
+|        10 |
++-----------+
+1 row in set (0.03 sec)
+
+
+2. Display the maximum Weight in the Parts table. 
+mysql> SELECT MAX(Weight) AS MaxWeight FROM P;
++-----------+
+| MaxWeight |
++-----------+
+|        14 |
++-----------+
+1 row in set (0.02 sec)
+
+3. Display the average Weight of the Parts. 
+mysql> SELECT AVG(Weight) AS AvgWeight FROM P;
++--------------------+
+| AvgWeight          |
++--------------------+
+| 13.166666666666666 |
++--------------------+
+1 row in set (0.00 sec)
+
+
+4. Display the total Quantity sold for part ‘P1’. 
+mysql> SELECT SUM(Qty) AS TotalQtySold
+    -> FROM SPJ
+    -> WHERE `P#` = 'P1';
++--------------+
+| TotalQtySold |
++--------------+
+|          100 |
++--------------+
+1 row in set (0.03 sec)
+
+mysql> SELECT P#, SUM(Qty) AS TotalQtySold
+    ->  FROM SPJ
+    -> GROUP BY P#;
+    -> ;
+ERROR 1054 (42S22): Unknown column 'P' in 'field list'
+mysql> SELECT `P#`, SUM(Qty) AS TotalQtySold
+    -> FROM SPJ
+    -> GROUP BY `P#`;
++----+--------------+
+| P# | TotalQtySold |
++----+--------------+
+| P1 |          100 |
+| P2 |          200 |
+| P3 |          300 |
++----+--------------+
+3 rows in set (0.00 sec)
+
+5. Display the total Quantity sold for each part. 
+mysql> SELECT `P#`, AVG(Qty) AS AvgQtySold
+    -> FROM SPJ
+    -> GROUP BY `P#`;
++----+------------+
+| P# | AvgQtySold |
++----+------------+
+| P1 |   100.0000 |
+| P2 |   200.0000 |
+| P3 |   300.0000 |
++----+------------+
+3 rows in set (0.00 sec)
+
+6. Display the average Quantity sold for each part. 
+mysql> SELECT `P#`, AVG(Qty) AS AverageQtySold
+    -> FROM SPJ
+    -> GROUP BY `P#`;
++----+----------------+
+| P# | AverageQtySold |
++----+----------------+
+| P1 |       100.0000 |
+| P2 |       200.0000 |
+| P3 |       300.0000 |
++----+----------------+
+3 rows in set (0.00 sec)
+
+
+7. Display the maximum Quantity sold for each part, provided the maximum Quantity 
+is greater than 800. 
+ mysql> SELECT `P#`, MAX(Qty) AS MaxQtySold
+    -> FROM SPJ
+    -> GROUP BY `P#`
+    -> HAVING MAX(Qty) > 800;
+Empty set (0.00 sec)
+
+
+8. Display the Status and the count of Suppliers with that Status. 
+
+mysql> SELECT Status, COUNT(*) AS SupplierCount
+    -> FROM S
+    -> GROUP BY Status;
++--------+---------------+
+| Status | SupplierCount |
++--------+---------------+
+|     10 |             1 |
+|     20 |             1 |
+|     30 |             1 |
++--------+---------------+
+3 rows in set (0.00 sec)
+
+
+9. Display the count of Projects going on in different cities. 
+mysql> SELECT City, COUNT(*) AS ProjectCount
+    -> FROM P
+    -> GROUP BY City;
++--------+--------------+
+| City   | ProjectCount |
++--------+--------------+
+| London |            1 |
+| Berlin |            1 |
+| Paris  |            1 |
++--------+--------------+
+3 rows in set (0.00 sec)
+
+
+10. What is the difference between COUNT(Status) and COUNT(*) ? mysql> SELECT COUNT(Status) AS StatusCount, COUNT(*) AS TotalCount FROM S;
++-------------+------------+
+| StatusCount | TotalCount |
++-------------+------------+
+|           3 |          3 |
++-------------+------------+
+1 row in set (0.00 sec)
+
+
+11. Display the Status and the Count of Suppliers with that Status in the following format 
+as shown below:- 
+ 
+Status Count 
+Ten 1 
+Twenty 2 
+Thirty 3 
+mysql> SELECT
+    ->     CASE
+    ->         WHEN Status = 10 THEN 'Ten'
+    ->         WHEN Status = 20 THEN 'Twenty'
+    ->         WHEN Status = 30 THEN 'Thirty'
+    ->         ELSE 'Other'
+    ->  END AS Status,
+    ->     COUNT(*) AS SupplierCount
+    -> FROM S
+    -> GROUP BY
+    ->     CASE
+    ->         WHEN Status = 10 THEN 'Ten'
+    ->         WHEN Status = 20 THEN 'Twenty'
+    ->         WHEN Status = 30 THEN 'Thirty'
+    ->      ELSE 'Other'
+    ->     END;
++--------+---------------+
+| Status | SupplierCount |
++--------+---------------+
+| Ten    |             1 |
+| Twenty |             1 |
+| Thirty |             1 |
++--------+---------------+
+3 rows in set (0.01 sec)
